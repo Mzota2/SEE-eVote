@@ -20,7 +20,7 @@ export const signUp = async (email: string, password: string, userData: Partial<
       email: user.email!,
       name: userData.name || "",
       role: userData.role || "voter",
-      organizationId: userData.organizationId,
+      organizationId: userData.organizationId || "",
       createdAt: new Date(),
       ...userData,
     }

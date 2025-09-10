@@ -39,9 +39,7 @@ export default function RegisterPage() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("function is firing");
-    console.log(formData);
+    e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
       toast({
@@ -75,9 +73,7 @@ export default function RegisterPage() {
     }
 
     const { user, error } = await signUp(formData.email, formData.password, userData);
-    console.log(user);
     if (error) {
-      console.log(error);
       toast({
         title: "Registration Failed",
         description: error,
@@ -144,11 +140,19 @@ export default function RegisterPage() {
                   <div className="space-y-2">
                     <Input
                       type="password"
+                      id="password"
+                      name="password"
                       placeholder="Password"
+                      value={formData.password}
+                      onChange={handleInputChange}
                       className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
                     <Input
                       type="password"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleInputChange}
                       placeholder="Confirm Password"
                       className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
@@ -156,7 +160,12 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="flex items-center space-x-2">
-                  <Checkbox id="terms" className="border-white/20" />
+                  <Checkbox checked={formData.agreeToTerms} onCheckedChange={()=>{setFormData((prev)=>{
+                    return {
+                      ...prev,
+                      agreeToTerms:!prev.agreeToTerms
+                    }
+                  })}} id="terms" className="border-white/20" />
                   <Label htmlFor="terms" className="text-sm text-white/90">
                     I agree to LOGO's Terms and Service and Privacy Policy
                   </Label>

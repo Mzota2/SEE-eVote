@@ -19,9 +19,9 @@ export default function DashboardPage() {
   const [loadingElections, setLoadingElections] = useState(true)
 
   useEffect(() => {
-    // if (!loading && !user) {
-    //   router.push("/login")
-    // }
+    if (!loading && !user) {
+      router.push("/login")
+    }
   }, [user, loading, router])
 
   useEffect(() => {
@@ -36,16 +36,16 @@ export default function DashboardPage() {
     }
   }, [user])
 
-  // if (loading || !user) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center">
-  //       <div className="text-center">
-  //         <div className="w-8 h-8 border-2 border-ivote-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-  //         <p className="text-gray-600">Loading...</p>
-  //       </div>
-  //     </div>
-  //   )
-  // }
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-ivote-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <DashboardLayout>
