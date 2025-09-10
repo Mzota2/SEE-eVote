@@ -19,9 +19,9 @@ export default function DashboardPage() {
   const [loadingElections, setLoadingElections] = useState(true)
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push("/login")
-    }
+    // if (!loading && !user) {
+    //   router.push("/login")
+    // }
   }, [user, loading, router])
 
   useEffect(() => {
@@ -36,23 +36,23 @@ export default function DashboardPage() {
     }
   }, [user])
 
-  if (loading || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-ivote-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    )
-  }
+  // if (loading || !user) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center">
+  //       <div className="text-center">
+  //         <div className="w-8 h-8 border-2 border-ivote-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+  //         <p className="text-gray-600">Loading...</p>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   return (
     <DashboardLayout>
       <div className="space-y-6">
         {/* Welcome Header */}
         <div className="bg-white rounded-lg p-6 shadow-sm">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Hello, {user.name.split(" ")[0]}!</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Hello, {user?.name.split(" ")[0]}!</h1>
           <p className="text-gray-600">Welcome LOGO's Online Voting System</p>
         </div>
 

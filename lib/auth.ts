@@ -11,6 +11,7 @@ import type { User } from "./types"
 
 export const signUp = async (email: string, password: string, userData: Partial<User>) => {
   try {
+    console.log("the function is running");
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
     const user = userCredential.user
 

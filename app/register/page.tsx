@@ -40,6 +40,8 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("function is firing");
+    console.log(formData);
 
     if (formData.password !== formData.confirmPassword) {
       toast({
@@ -106,7 +108,7 @@ export default function RegisterPage() {
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Registration</h1>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <form onSubmit={handleSubmit} className="grid lg:grid-cols-2 gap-8">
           {/* Welcome Card */}
           <Card className="p-8 bg-ivote-gradient text-white flex flex-col justify-center">
             <div className="space-y-6">
@@ -160,7 +162,11 @@ export default function RegisterPage() {
                   </Label>
                 </div>
 
-                <Button className="w-full bg-white text-ivote-primary hover:bg-white/90">REGISTER</Button>
+                <Button 
+                  type="submit"
+                  disabled={loading}
+                  
+                className="w-full bg-white text-ivote-primary hover:bg-white/90">{loading ? "Creating Account..." : "REGISTER"}</Button>
 
                 <p className="text-center text-white/80">
                   Already have an account?{" "}
@@ -174,7 +180,7 @@ export default function RegisterPage() {
 
           {/* Registration Form */}
           <Card className="p-8 bg-white/80 backdrop-blur-sm border-0 shadow-xl">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-6">
               <div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-4">Fill out your information</h3>
                 <p className="text-gray-600 mb-6">Please fill out your information below.</p>
@@ -303,16 +309,16 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              <Button
+              {/* <Button
                 type="submit"
                 disabled={loading}
                 className="w-full bg-ivote-primary hover:bg-ivote-primary/90 text-white"
               >
                 {loading ? "Creating Account..." : "SUBMIT"}
-              </Button>
-            </form>
+              </Button> */}
+            </div>
           </Card>
-        </div>
+        </form>
       </div>
     </div>
   )
