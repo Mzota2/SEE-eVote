@@ -3,11 +3,12 @@ import { db } from "./firebase"
 import type { Election, Vote, Organization, User } from "./types"
 
 // Election Management
-export const createElection = async (electionData: Omit<Election, "id" | "createdAt">) => {
+export const createElection = async (electionData: Omit<Election, "id" | "createdAt" | "updatedAt">) => {
   try {
     const docRef = await addDoc(collection(db, "elections"), {
       ...electionData,
       createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
     })
     return { id: docRef.id, error: null }
   } catch (error: any) {
@@ -40,7 +41,7 @@ export const getElections = async (organizationId?: string) => {
 }
 
 // Voting Functions
-export const castVote = async (voteData: Omit<Vote, "id" | "timestamp">) => {
+export const castVote = async (voteData: Omit<Vote, "id" | "createdAt" | "updatedAt">) => {
   try {
     // Check if user has already voted for this position
     const existingVoteQuery = query(
@@ -48,6 +49,8 @@ export const castVote = async (voteData: Omit<Vote, "id" | "timestamp">) => {
       where("voterId", "==", voteData.voterId),
       where("electionId", "==", voteData.electionId),
       where("positionId", "==", voteData.positionId),
+      where("candidateId", "==", voteData.candidateId),
+      where("organizationId", "==", voteData.organizationId),
     )
 
     const existingVotes = await getDocs(existingVoteQuery)
@@ -58,7 +61,8 @@ export const castVote = async (voteData: Omit<Vote, "id" | "timestamp">) => {
 
     const docRef = await addDoc(collection(db, "votes"), {
       ...voteData,
-      timestamp: serverTimestamp(),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
     })
 
     // Log the vote action
@@ -99,11 +103,12 @@ export const getVoteResults = async (electionId: string) => {
 }
 
 // Organization Management
-export const createOrganization = async (orgData: Omit<Organization, "id" | "createdAt">) => {
+export const createOrganization = async (orgData: Omit<Organization, "id" | "createdAt" | "updatedAt">) => {
   try {
     const docRef = await addDoc(collection(db, "organizations"), {
       ...orgData,
       createdAt: serverTimestamp(),
+      updatedAt:serverTimestamp()
     })
     return { id: docRef.id, error: null }
   } catch (error: any) {
@@ -136,7 +141,7 @@ export const logAction = async (
 // User Management
 export const getUsersByOrganization = async (organizationId: string) => {
   try {
-    const usersQuery = query(collection(db, "users"), where("organizationId", "==", organizationId))
+    const usersQuery = query(collection(db, "users"), where("organizationIds", "array-contains", organizationId))
 
     const usersSnapshot = await getDocs(usersQuery)
     const users = usersSnapshot.docs.map((doc) => ({

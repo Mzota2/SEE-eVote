@@ -2,16 +2,27 @@ export interface User {
   id: string
   email: string
   name: string
-  role: "superAdmin" | "admin" | "voter"
-  organizationId?: string
-  createdAt: Date
+  role: Role[]
   profileImage?: string
   contactNumber?: string
+  organizationIds?:string[]
   address?: {
     region: string
     street: string
     city: string
   }
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface Role{
+  id:string,
+  name:"default" | "voter" | "admin" | "superadmin"
+  userId:string,
+  electionId:string,
+  organizationId:string,
+  createdAt:Date
+  updatedAt:Date
 }
 
 export interface Election {
@@ -24,29 +35,35 @@ export interface Election {
   organizationId: string
   status: "pending" | "ongoing" | "closed"
   electionToken: string
+  maxVoters?:number
   positions: Position[]
   createdAt: Date
+  updatedAt: Date
 }
 
 export interface Position {
   id: string
+  createdBy: string
   title: string
+  electionId:string
+  organizationId:string
   description?: string
-  maxVotes: number
+  maxVotes?: number
   candidates: Candidate[]
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface Candidate {
   id: string
   name: string
   position: string
-  department?: string
-  age?: number
   image?: string
   platform?: string[]
   electionId: string
   positionId: string
-  createdAt: Date
+  createdAt:Date
+  updatedAt: Date
 }
 
 export interface Vote {
@@ -55,32 +72,41 @@ export interface Vote {
   electionId: string
   positionId: string
   candidateId: string
-  timestamp: Date
   organizationId: string
+  createdAt: Date
+  updatedAt: Date
+  
 }
 
 export interface Organization {
   id: string
   name: string
-  adminId: string
+  description?:string
+  createdBy: string
+  logo?:string
   electionToken: string
   isActive: boolean
-  createdAt: Date
+  createdAt:Date
+  updatedAt:Date
 }
 
 export interface AuditLog {
   id: string
   userId: string
   action: string
-  electionId?: string
+  electionId: string
   organizationId: string
   timestamp: Date
   details?: Record<string, any>
 }
 
 export interface VotingStats {
+  id:string,
   totalRegisteredVoters: number
   totalVotes: number
   totalCandidates: number
   electionId: string
+  organizationId:string
+  totalReportedIssues?:number
+  createdAt:Date
 }
