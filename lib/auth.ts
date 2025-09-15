@@ -5,13 +5,13 @@ import {
   onAuthStateChanged,
   type User as FirebaseUser,
 } from "firebase/auth"
-import { doc, setDoc, getDoc } from "firebase/firestore"
+import { doc, setDoc, getDoc, updateDoc, deleteDoc } from "firebase/firestore"
 import { auth, db } from "./firebase"
 import type { User } from "./types"
-
+import type { Role } from "./types"
+import {httpsCallable} from 'firebase/functions'
 export const signUp = async (email: string, password: string, userData: Partial<User>) => {
   try {
-    console.log("the function is running");
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
     const user = userCredential.user
 
@@ -19,9 +19,9 @@ export const signUp = async (email: string, password: string, userData: Partial<
       id: user.uid,
       email: user.email!,
       name: userData.name || "",
-      role: userData.role || "voter",
-      organizationId: userData.organizationId || "",
+      organizationIds: userData.organizationIds || [""],
       createdAt: new Date(),
+      updatedAt: new Date(),
       ...userData,
     }
 
@@ -53,6 +53,32 @@ export const signOut = async () => {
     return { error: null }
   } catch (error: any) {
     return { error: error.message }
+  }
+}
+
+export const updateAccount = async(userId:string, updateData:Partial <User> )=>{
+  try {
+   const newUser = {
+      updatedAt:new Date(),
+      ...updateData,
+    }
+    const userRef = doc(db, 'users', userId);
+    await updateDoc(userRef, updateData);
+    return { user: newUser, error: null }
+  } catch (error : any) {
+     return { user: null, error: error.message }
+  
+  }
+  
+}
+
+export const deleteAccount = async(userId:string)=>{
+  try {
+    const userRef = doc(db, 'users', userId);
+    await deleteDoc(userRef);
+    
+  } catch (error:any) {
+    return {user:null, error:error.message}
   }
 }
 

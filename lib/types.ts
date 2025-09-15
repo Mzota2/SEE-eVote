@@ -2,7 +2,6 @@ export interface User {
   id: string
   email: string
   name: string
-  role: Role[]
   profileImage?: string
   contactNumber?: string
   organizationIds?:string[]
@@ -36,7 +35,6 @@ export interface Election {
   status: "pending" | "ongoing" | "closed"
   electionToken: string
   maxVoters?:number
-  positions: Position[]
   createdAt: Date
   updatedAt: Date
 }
@@ -49,7 +47,6 @@ export interface Position {
   organizationId:string
   description?: string
   maxVotes?: number
-  candidates: Candidate[]
   createdAt: Date
   updatedAt: Date
 }
@@ -109,4 +106,5 @@ export interface VotingStats {
   organizationId:string
   totalReportedIssues?:number
   createdAt:Date
+  updatedAt:Date
 }
